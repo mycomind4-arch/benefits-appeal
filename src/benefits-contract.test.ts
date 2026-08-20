@@ -33,6 +33,15 @@ describe("Benefits Appeal contract", () => {
     expect(canValidateBenefitsAppeal(result)).toBe(true);
   });
 
+  it("blocks supported issues without evidence provenance", () => {
+    const result = extractBenefitsCase({
+      decision: { id: "d", text: "Your claim was denied." },
+      supportingDocuments: [],
+    });
+    result.issues[0].status = "supported";
+    expect(canDraftBenefitsAppeal(result)).toBe(false);
+  });
+
   it("blocks validation when an issue needs an authoritative source", () => {
     const result = extractBenefitsCase({
       decision: { id: "d", text: "Your claim was denied." },
