@@ -68,9 +68,11 @@ export function extractBenefitsCase(input: BenefitsCaseInput): BenefitsCase {
 }
 
 export function canDraftBenefitsAppeal(caseData: BenefitsCase): boolean {
-  return caseData.issues.length > 0 && caseData.issues.every((issue) =>
-    issue.status === "supported" || issue.status === "draft_ready" || issue.status === "excluded",
-  );
+  return caseData.issues.length > 0 && caseData.issues.every((issue) => {
+    if (issue.status === "excluded") return true;
+    if (issue.status !== "supported" && issue.status !== "draft_ready") return false;
+    return issue.evidenceIds.some((id) => id.trim().length > 0);
+  });
 }
 
 export function canValidateBenefitsAppeal(caseData: BenefitsCase): boolean {
