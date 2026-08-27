@@ -1,13 +1,24 @@
-# Benefits Appeal — Master Workflow Directory
+# Appeal & Reply — Master Workflow Directory
 
-This repository is the master product for benefits decision, reconsideration, and appeal workflows.
+Appeal & Reply is the master product for the broader **appeal, reconsideration, and formal reply** search-intent category.
 
-Initial workflow families:
-- denied public benefits
-- disability benefits appeal
-- unemployment appeal
-- agency reconsideration
-- hearing preparation
-- benefits evidence organization
+This repository owns the specialized workflows beneath that category. A new appeal situation should normally become a workflow/page/route here rather than a new repository.
 
-Each workflow should have distinct search intent, source documents, deadlines, evidence needs, response structure, and canonical content when warranted. Shared identity, documents, mailing, proof, billing, and UI belong to the platform layer.
+## Initial workflow families
+
+- Appeal a government decision
+- Appeal denied benefits
+- Request reconsideration
+- Write an appeal letter
+- Appeal a claim/coverage decision
+- Respond to an adverse administrative determination
+
+Each workflow should map a distinct user intent to its own document inputs, deadline handling, evidence requirements, response structure, and authoritative-source requirements.
+
+## SEO rule
+
+Create dedicated canonical workflow pages only when the user problem or workflow materially differs. Do not create thin keyword variants of one generic appeal page.
+
+## Architecture rule
+
+Keep shared identity, documents, payments, mailing, tracking, proof, and design-system primitives in the MailMyPDF/platform layer. Keep appeal-specific analysis, evidence reasoning, drafting, and workflow logic here.

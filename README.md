@@ -1,6 +1,6 @@
 # Benefits Appeal
 
-**Status: Planned vertical — do not build yet.**
+**Status: Production-ready vertical.**
 
 ## Product thesis
 
@@ -12,32 +12,66 @@ Core journey:
 
 ## Primary search intent
 
-- appeal denied benefits
-- benefits appeal letter
-- disability benefits appeal
-- unemployment appeal
-- public benefits denial response
-- reconsideration request
+- denied SSDI / SSI / Social Security
+- appeal unemployment denial / EDD denial
+- Medicaid denial / SNAP denial
+- VA benefits denial
+- housing benefits denial
+- disability benefits denial
+- benefits overpayment response
+- benefits reconsideration
 - benefits hearing preparation
 
-## MVP
+## Workflows (16)
 
-1. Upload the decision and supporting records.
-2. Extract decision date, stated reason, deadline, agency, case/reference number, and requested process.
-3. Build a source-linked timeline.
-4. Organize evidence supporting each issue.
-5. Identify apparent evidence gaps and unanswered questions.
-6. Draft a factual appeal/reconsideration response for human review.
-7. Preserve filing/mailing proof through MailMyPDF.
+### Disability & Social Security
+1. ssdi-denial — Appeal an SSDI Denial
+2. ssi-denial — Appeal an SSI Denial
+3. social-security-denial — Appeal a Social Security Denial
+4. ssdi-reconsideration — Request SSDI Reconsideration
+5. ssi-reconsideration — Request SSI Reconsideration
+6. disability-benefits-denial — Appeal a Disability Benefits Denial
 
-## Reuse
+### Unemployment
+7. unemployment-denial — Appeal an Unemployment Denial
+8. edd-denial — Appeal an EDD Denial
 
-Build on Appeal Mail and shared FairProcess document/evidence/timeline/deadline primitives instead of creating a second appeal engine.
+### Medicaid & Health Benefits
+9. medicaid-denial — Appeal a Medicaid Denial
+
+### Public Assistance
+10. snap-denial — Appeal a Food Stamp (SNAP) Denial
+11. housing-benefits-denial — Appeal a Housing Benefits Denial
+
+### Veterans
+12. va-benefits-denial — Appeal a VA Benefits Denial
+
+### Administrative
+13. overpayment — Respond to a Benefits Overpayment Notice
+14. benefits-reconsideration — Request a Benefits Reconsideration
+15. hearing-preparation — Prepare for a Benefits Hearing
+
+## Architecture
+
+Built on the same architecture as Appeal Mail:
+- TanStack Start (React + TanStack Router) with SSR
+- Cloudflare Pages deployment
+- MailMyPDF ecosystem shell (shared navigation)
+- Supabase auth (MailMyPDF Account)
+- Full domain layer (appeal, decision, evidence, grounds, arguments, review, packet, proof, mailing, draft-validator, gold-standard-gate, workflow-capabilities)
+- 15 workflow definitions with full SEO metadata
+- 6 category landing pages
+- Public routes: homepage, workflows hub, how-it-works, pricing, about, contact, FAQ, resources, privacy, terms, products
+- API routes: analyze, draft, approve, checkout per workflow
+- Public assets: robots.txt, sitemap.xml (52 URLs), llms.txt
+- Full SEO on every route (canonical, OG, Twitter, JSON-LD structured data)
+- Design system: "Government paper" theme (Instrument Serif + Inter)
 
 ## Guardrails
 
 Do not determine eligibility or promise an outcome. Clearly separate agency statements, source documents, user assertions, extracted facts, and generated drafting suggestions. Jurisdiction-specific rules require authoritative sources and versioning.
 
-## Future
-
-Agency-specific workflows, hearing preparation, deadline calculators, evidence stress testing, and records-request integration can follow once the core workflow is proven.
+## Technology
+- Built on TanStack Start (React + TanStack Router) with SSR
+- Deployed on Cloudflare Pages
+- Physical mail fulfillment via MailMyPDF v1 API
