@@ -62,3 +62,14 @@ export function evaluateGoldStandardGate(workflow: ConstructedWorkflow): GoldSta
     blockingReasons,
   };
 }
+
+// ── Shared Gold Standard Integration ──────────────────────────────────────
+import { certifyWorkflow, type GoldStandardChecklist, type GoldStandardResult, type LLMFullProvenance } from '@mailmypdf/ai';
+
+export function certifyBenefitsWorkflow(
+  workflowId: string,
+  checklist: GoldStandardChecklist,
+  options?: { testProvenance?: LLMFullProvenance; testProvider?: 'gemini' | 'openai' | 'anthropic'; notes?: string },
+): GoldStandardResult {
+  return certifyWorkflow(workflowId, 'benefits-appeal', checklist, options);
+}
