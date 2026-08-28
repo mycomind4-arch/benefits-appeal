@@ -1,14 +1,19 @@
 # Execution Decision
 
-**Status: Production-ready. Built to Appeal Mail standard.**
+Status: CATALOG / ARCHITECTURE DECISION
 
-The shared domain layer (appeal, decision, evidence, grounds, arguments, review, packet, proof, mailing, draft-validator, gold-standard-gate, workflow-capabilities) has been adopted from Appeal Mail. The benefits-contract.ts domain module has been preserved and integrated.
+Do not build a second appeal engine.
 
-16 benefits-specific workflows are defined, each with:
-- Full workflow definition (18 lifecycle steps, decision fields, focus areas, SEO keywords)
-- Catalog entry with SEO metadata (title, description, keywords, related keywords)
-- API routes (analyze, draft, approve, checkout)
-- Workflow route component
-- Category landing page
+## Intended workflow
 
-Build passes. 20 tests pass (0 fail).
+Decision → secure ingest → extract decision facts/deadline → provenance → evidence mapping → rules/requirements research where supported → strategy → draft → validation → human review → filing/mail authorization → tracking → proof.
+
+## Ownership
+
+- Appeal Mail owns generic appeal workflow patterns and domain-neutral response mechanics.
+- MailMyPDF Platform owns shared document, evidence, timeline, deadline, workflow, validation, fulfillment, tracking, and proof primitives.
+- Benefits Appeal owns benefits-program taxonomy, decision-reason extraction, program-specific requirements, and benefit-specific drafting rules.
+
+## Gate
+
+Build only after Appeal Mail's reusable boundaries are verified. Never infer eligibility or promise an appeal result. Jurisdiction/program rules must be source-backed and versioned.

@@ -4,62 +4,43 @@ Research basis: Keyword.com US English keyword discovery, August 2026.
 
 ## Strategy
 
-Benefits Appeal should own the broad **appeal / reconsideration / appeal-letter** search universe. Prioritize action-ready users, while using informational searches to build authority and funnel into workflows.
+Own denial/reconsideration/appeal intent across major benefits programs. The most valuable terms are program-specific rather than generic "benefits appeal."
 
 ## Priority clusters
 
-### Core appeal intent
-- appeal letter — 1,300/mo
-- appeal letter sample — 1,300/mo
-- appeal letter format sample — 1,300/mo
-- appeal letter template — 260/mo
-- writing an appeal letter — 170/mo
-- letter for reconsideration — 170/mo
-- appeal for reconsideration sample letter — 590/mo
+### Social Security / disability
+- denied SSDI — 390/mo
+- appeal SSDI denial — 260/mo
+- SSI denial — 210/mo
+- social security denial appeal — 110/mo
+- social security denial — 110/mo
+- denied SSDI benefits — 50/mo
 
-### Financial aid / education
-- financial aid appeal letter — 1,000/mo
-- financial aid appeal letter example — 880/mo
-- financial aid appeal letter sample — 880/mo
-- financial aid appeal letter format — 880/mo
-- SAP appeal letter — 210/mo
-- academic appeal letter — 70/mo
+### Unemployment
+- denied unemployment — 390/mo
+- appealing unemployment denial — 210/mo
+- denial of unemployment benefits — 170/mo
+- denied unemployment claim — 170/mo
+- appeal EDD denial — 10/mo in current discovery; use EDD letter/appeal variants too
 
-### Insurance / medical
-- appeal insurance letter sample — 320/mo
-- insurance appeal letter format — 320/mo
-- insurance appeal letter template — 320/mo
-- medical appeal letter sample — 170/mo
-- medical appeal letter template — 170/mo
-- health insurance appeal letter sample — 70/mo
-- insurance claim appeal letter — 70/mo
-
-### Agency / benefits
-- EDD appeal letter example — 110/mo
-- sample appeal letter for EDD — 110/mo
-- FEMA appeal letter example — 110/mo
-- Medicare appeal letter examples — 70/mo
-- VA caregiver appeal letter sample — 70/mo
+### Medicaid / public benefits
+- Medicaid denied — 260/mo
+- appeal Medicaid denial — 210/mo
+- appealing a Medicaid denial — 210/mo
+- appeal food stamp denial — 10/mo
 
 ## Recommended architecture
 
 Benefits Appeal
-├── appeal letter
-├── appeal letter sample
-├── appeal letter template
-├── reconsideration letter
-├── financial aid appeal
-│   ├── SAP appeal
-│   └── academic appeal
-├── insurance appeal
-│   ├── health insurance
-│   └── denied claim
-├── benefits appeal
-│   ├── EDD
-│   ├── Medicare
-│   └── FEMA
-└── evidence-backed appeal workflow
+├── Social Security / SSDI / SSI
+├── Unemployment
+├── Medicaid
+├── Food / nutrition benefits
+├── Disability benefits
+├── Overpayment decisions
+├── Reconsideration
+└── Hearing / appeal preparation
 
 ## Rule
 
-Do not build thin pages for every keyword variation. Consolidate close variants into authoritative pages and give each true search-intent cluster a materially useful workflow.
+Separate program education from action workflows. Every conversion page should identify decision date, stated reason, deadline/process, evidence needs, and the response/appeal document.
