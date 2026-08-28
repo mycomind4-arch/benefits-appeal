@@ -1,25 +1,23 @@
 import { createServerFn } from "@tanstack/react-start";
 import { isReadyToMail } from "@/domain/appeal";
 import { loadAppeal } from "./appeal-repository";
+import {
+  calculateQuote,
+  getWorkflowPricingProfile,
+  LABELS,
+  type MailClass,
+} from "@mailmypdf/pricing";
 
 /* ─────────────────────────────────────────────
    Stripe checkout integration.
    Creates a checkout session only after the
    owner-scoped appeal passes the canonical
    readiness gate.
+
+   Pricing is server-authoritative via the
+   canonical @mailmypdf/pricing engine —
+   no local price constants.
    ───────────────────────────────────────────── */
-
-const MAILING_PRICES: Record<string, number> = {
-  standard: 499,
-  certified: 1494,
-  registered: 3249,
-};
-
-const MAILING_LABELS: Record<string, string> = {
-  standard: "Standard Mailing",
-  certified: "Certified Mailing",
-  registered: "Registered Mailing",
-};
 
 async function getStripe() {
   const { default: Stripe } = await import("stripe");
@@ -37,8 +35,9 @@ export const createCheckoutSession = createServerFn()
     recipientName: string;
     workflowId: string;
     userId: string;
+    pageCount?: number;
   }) => {
-    if (!input.mailingMethod || !MAILING_PRICES[input.mailingMethod]) {
+    if (!input.mailingMethod) {
       throw new Error("Invalid mailing method");
     }
     if (!input.appealId.trim()) {
@@ -66,9 +65,34 @@ export const createCheckoutSession = createServerFn()
       throw new Error("Appeal is not approved and readiness-validated for mailing");
     }
 
+    // ── Canonical pricing — server-authoritative quote ──────────
+    const profile = getWorkflowPricingProfile(data.workflowId);
+    const actualPages = Math.max(1, data.pageCount || appeal.pageCount || 3);
+    const mailClass = data.mailingMethod as MailClass;
+
+    let quoteTotalCents: number;
+    let lineItemName: string;
+    let lineItemDescription: string;
+
+    if (profile && profile.commercialStatus === "production") {
+      const quote = calculateQuote({
+        workflowId: data.workflowId,
+        verticalId: "benefits-appeal",
+        actualPages,
+        mailClass,
+      });
+      quoteTotalCents = quote.totalCents;
+      lineItemName = `Benefits Appeal — ${LABELS[data.mailingMethod]}`;
+      lineItemDescription = `Workflow preparation ($${(quote.basePriceCents / 100).toFixed(2)}) + ${LABELS[data.mailingMethod]}`;
+    } else {
+      // Fallback: mailing-only (should not happen for production workflows)
+      quoteTotalCents = 0;
+      lineItemName = LABELS[data.mailingMethod] || "Mailing";
+      lineItemDescription = `Benefits Appeal — ${lineItemName} for ${data.recipientName}`;
+    }
+
     const stripe = await getStripe();
-    const price = MAILING_PRICES[data.mailingMethod];
-    const label = MAILING_LABELS[data.mailingMethod];
+    const appUrl = process.env.APP_URL || "https://benefits-appeal.pages.dev";
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -78,15 +102,15 @@ export const createCheckoutSession = createServerFn()
           price_data: {
             currency: "usd",
             product_data: {
-              name: label,
-              description: `Benefits Appeal — ${label} for ${data.recipientName}`,
+              name: lineItemName,
+              description: lineItemDescription,
               metadata: {
                 workflow_id: data.workflowId,
                 appeal_id: data.appealId,
                 mailing_method: data.mailingMethod,
               },
             },
-            unit_amount: price,
+            unit_amount: quoteTotalCents,
           },
           quantity: 1,
         },
@@ -97,9 +121,12 @@ export const createCheckoutSession = createServerFn()
         mailing_method: data.mailingMethod,
         recipient_name: data.recipientName,
         owner_user_id: data.userId,
+        pricing_source: profile ? "canonical" : "fallback",
+        quote_total_cents: String(quoteTotalCents),
+        actual_pages: String(actualPages),
       },
-      success_url: `${process.env.APP_URL || "https://benefits-appeal.pages.dev"}/workflows/${data.workflowId}?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.APP_URL || "https://benefits-appeal.pages.dev"}/workflows/${data.workflowId}?checkout=cancelled`,
+      success_url: `${appUrl}/workflows/${data.workflowId}?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appUrl}/workflows/${data.workflowId}?checkout=cancelled`,
     });
 
     return {

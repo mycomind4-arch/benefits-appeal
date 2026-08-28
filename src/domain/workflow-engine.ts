@@ -1,6 +1,9 @@
 /**
  * Benefits Appeal — Workflow Engine
- * Domain-specific analysis, drafting, validation, and pricing for government benefits appeals.
+ * Domain-specific analysis, drafting, and validation for government benefits appeals.
+ *
+ * Pricing is handled by the canonical @mailmypdf/pricing engine.
+ * No local pricing constants are defined in this module.
  */
 
 export interface BenefitsAnalysisResult {
@@ -24,16 +27,6 @@ export interface BenefitsDraftConfig {
   validationPrompt: string;
   requiredSections: string[];
   forbiddenPhrases: string[];
-  pricing: {
-    preparationFee: number;
-    includedResponsePages: number;
-    supportingPagePrice: number;
-    standardMail: number;
-    certifiedMail: number;
-    registeredMail: number;
-    largePacketThresholdSheets: number;
-    largePacketFee: number;
-  };
 }
 
 export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
@@ -44,7 +37,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal an ssdi denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "ssdi-reconsideration": {
     workflowId: "ssdi-reconsideration",
@@ -53,7 +45,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this request ssdi reconsideration draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "ssi-denial": {
     workflowId: "ssi-denial",
@@ -62,7 +53,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal an ssi denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "ssi-reconsideration": {
     workflowId: "ssi-reconsideration",
@@ -71,7 +61,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this request ssi reconsideration draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "social-security-denial": {
     workflowId: "social-security-denial",
@@ -80,7 +69,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal a social security denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "social-security-overpayment": {
     workflowId: "social-security-overpayment",
@@ -89,7 +77,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this respond to a social security overpayment notice draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "ssdi-hearing": {
     workflowId: "ssdi-hearing",
@@ -98,7 +85,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this request an ssdi administrative law judge hearing draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "ssi-hearing": {
     workflowId: "ssi-hearing",
@@ -107,7 +93,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this request an ssi administrative law judge hearing draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "unemployment-denial": {
     workflowId: "unemployment-denial",
@@ -116,7 +101,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal an unemployment denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "unemployment-overpayment": {
     workflowId: "unemployment-overpayment",
@@ -125,7 +109,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this respond to an unemployment overpayment notice draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "edd-denial": {
     workflowId: "edd-denial",
@@ -134,7 +117,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal an edd denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "edd-appeal": {
     workflowId: "edd-appeal",
@@ -143,7 +125,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this respond to an edd appeal letter draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "unemployment-reconsideration": {
     workflowId: "unemployment-reconsideration",
@@ -152,7 +133,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this request unemployment reconsideration draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "unemployment-hearing": {
     workflowId: "unemployment-hearing",
@@ -161,7 +141,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this request an unemployment hearing draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "medicaid-denial": {
     workflowId: "medicaid-denial",
@@ -170,7 +149,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal a medicaid denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "medicaid-reduction": {
     workflowId: "medicaid-reduction",
@@ -179,7 +157,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this respond to a medicaid benefit reduction or termination draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "medicaid-reconsideration": {
     workflowId: "medicaid-reconsideration",
@@ -188,7 +165,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this request medicaid reconsideration draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "chip-denial": {
     workflowId: "chip-denial",
@@ -197,7 +173,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal a chip denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "medicare-denial": {
     workflowId: "medicare-denial",
@@ -206,7 +181,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal a medicare denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "food-stamp-denial": {
     workflowId: "food-stamp-denial",
@@ -215,7 +189,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal a food stamp (snap) denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "snap-reduction": {
     workflowId: "snap-reduction",
@@ -224,7 +197,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this respond to a snap benefit reduction draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "tanf-denial": {
     workflowId: "tanf-denial",
@@ -233,7 +205,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal a tanf denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "va-disability-denial": {
     workflowId: "va-disability-denial",
@@ -242,7 +213,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal a va disability denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "va-claim-reconsideration": {
     workflowId: "va-claim-reconsideration",
@@ -251,7 +221,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this request a va claim reconsideration draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "va-hearing": {
     workflowId: "va-hearing",
@@ -260,7 +229,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this request a va board hearing draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "state-disability-denial": {
     workflowId: "state-disability-denial",
@@ -269,7 +237,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal a state disability denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "workers-comp-denial": {
     workflowId: "workers-comp-denial",
@@ -278,7 +245,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal a workers compensation denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "private-disability-denial": {
     workflowId: "private-disability-denial",
@@ -287,7 +253,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this appeal a private disability insurance denial draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "benefits-reconsideration": {
     workflowId: "benefits-reconsideration",
@@ -296,7 +261,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this request a benefits reconsideration draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   },
   "benefits-hearing": {
     workflowId: "benefits-hearing",
@@ -305,7 +269,6 @@ export const BENEFITS_WORKFLOW_CONFIGS: Record<string, BenefitsDraftConfig> = {
     validationPrompt: "Audit this request a benefits hearing draft. Check for case number consistency, decision date, deadline compliance, and evidence citations. Return JSON: {valid:boolean, issues:string[], suggestions:string[]}.",
     requiredSections: ["Dear", "Sincerely", "Re:"],
     forbiddenPhrases: ["guaranteed approval", "you must approve", "I promise"],
-    pricing: { preparationFee: 39, includedResponsePages: 5, supportingPagePrice: 0.25, standardMail: 1.15, certifiedMail: 4.35, registeredMail: 15.40, largePacketThresholdSheets: 20, largePacketFee: 5.00 },
   }
 };
 
@@ -318,9 +281,23 @@ export function calculateBenefitsPricing(
   supportingSheets: number,
   mailingMethod: "standard" | "certified" | "registered",
 ) {
-  const P = config.pricing;
-  const mailing = mailingMethod === "standard" ? P.standardMail : mailingMethod === "certified" ? P.certifiedMail : P.registeredMail;
-  const largePacket = supportingSheets + P.includedResponsePages >= P.largePacketThresholdSheets ? P.largePacketFee : 0;
-  const total = P.preparationFee + supportingSheets * P.supportingPagePrice + mailing + largePacket;
-  return { preparationFee: P.preparationFee, includedResponsePages: P.includedResponsePages, supportingSheets, mailingMethod, mailingFee: mailing, largePacketFee: largePacket, total: Number(total.toFixed(2)) };
+  // Pricing is delegated to the canonical @mailmypdf/pricing engine.
+  // This function is kept for backward compatibility but now delegates.
+  const { calculateQuote } = require("@mailmypdf/pricing");
+  const quote = calculateQuote({
+    workflowId: config.workflowId,
+    verticalId: "benefits-appeal",
+    actualPages: Math.max(1, 3),
+    supportingPages: supportingSheets,
+    mailClass: mailingMethod,
+  });
+  return {
+    preparationFee: quote.basePriceCents / 100,
+    includedResponsePages: 3,
+    supportingSheets,
+    mailingMethod,
+    mailingFee: quote.mailCents / 100,
+    largePacketFee: 0,
+    total: quote.totalCents / 100,
+  };
 }

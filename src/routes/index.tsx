@@ -66,7 +66,7 @@ const lifecycleSteps = [
 
 const stats = [
   { value: "3–5", label: "Business day delivery" },
-  { value: `${(PRICES.standard / 100).toFixed(2)}`, label: "Starting price per mailing" },
+  { value: `${(PRICES.standard / 100).toFixed(2)}`, label: "Mailing (standard)" },
   { value: "100%", label: "You control the facts" },
   { value: "0", label: "Printers needed" },
 ];
