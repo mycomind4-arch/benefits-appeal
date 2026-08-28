@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -17,47 +13,17 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    }
+    "plugins": [{ "name": "next" }],
+    "paths": { "@/*": ["./*"] }
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "src/platform/llm-service.ts",
+    "src/domain/workflow-engine.ts",
+    "src/domain/draft-validator.ts",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "src/routes",
-    "src/api",
-    "src/components",
-    "src/router.tsx",
-    "src/routeTree.gen.ts",
-    "src/lib",
-    "src/platform/appeal-ai.functions.ts",
-    "src/platform/appeal-repository.ts",
-    "src/platform/checkout-fn.ts",
-    "src/platform/extract-fn.ts",
-    "src/platform/stress-test-fn.ts",
-    "src/platform/supabase.ts",
-    "src/platform/xray-fn.ts",
-    "src/platform/control-plane-ai.ts",
-    "src/platform/control-plane-logic.ts",
-    "src/platform/document-extraction.ts",
-    "src/platform/intelligence-adapter.ts",
-    "src/platform/mailmypdf-provider.ts",
-    "src/platform/mailmypdf.ts",
-    "src/platform/simple-pdf.ts",
-    "src/platform/text-extraction.ts",
-    "src/platform/timeline-fn.ts",
-    "src/platform/index.ts"
-  ]
+  "exclude": ["node_modules"]
 }
