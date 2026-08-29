@@ -41,6 +41,8 @@
   --color-stamp: var(--stamp);
   --color-stamp-soft: var(--stamp-soft);
   --color-rule: var(--rule);
+  --color-navy: var(--navy);
+  --color-navy-soft: var(--navy-soft);
 
   --color-cream: var(--paper);
   --color-warm-border: var(--rule);
@@ -128,20 +130,24 @@
 }
 
 :root {
-  /* Paper palette — warm ivory with deep navy-charcoal ink and bronze stamp */
-  --paper: oklch(0.97 0.012 120);
-  --paper-deep: oklch(0.94 0.015 120);
-  --ink: oklch(0.23 0.03 250);
-  --ink-soft: oklch(0.40 0.03 250);
+  /* Paper palette — aligned with MailMyPDF ecosystem (immigration-mail, records-requests)
+     Warm ivory paper, deep navy-charcoal ink, bronze stamp accent.
+     Editorial serif (Instrument Serif) + grotesk body (Inter) + mono (JetBrains Mono). */
+  --paper: oklch(0.975 0.012 80);
+  --paper-deep: oklch(0.95 0.015 78);
+  --ink: oklch(0.24 0.03 260);
+  --ink-soft: oklch(0.46 0.025 258);
+  --navy: oklch(0.30 0.05 255);
+  --navy-soft: oklch(0.40 0.04 256);
   --stamp: oklch(0.50 0.12 45);
   --stamp-soft: oklch(0.68 0.06 45);
-  --rule: oklch(0.87 0.012 120);
+  --rule: oklch(0.88 0.012 78);
 
   --background: var(--paper);
   --foreground: var(--ink);
-  --card: oklch(0.99 0.004 120);
+  --card: oklch(0.995 0.004 80);
   --card-foreground: var(--ink);
-  --popover: oklch(0.99 0.004 120);
+  --popover: oklch(0.995 0.004 80);
   --popover-foreground: var(--ink);
   --primary: var(--ink);
   --primary-foreground: var(--paper);
@@ -150,9 +156,9 @@
   --muted: var(--paper-deep);
   --muted-foreground: var(--ink-soft);
   --accent: var(--stamp);
-  --accent-foreground: oklch(0.99 0.004 120);
+  --accent-foreground: oklch(0.995 0.004 80);
   --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.99 0.004 120);
+  --destructive-foreground: oklch(0.995 0.004 80);
   --border: var(--rule);
   --input: var(--rule);
   --ring: var(--ink);
@@ -387,3 +393,12 @@
 .hero-border { border-color: rgba(255, 255, 255, 0.12); }
 .hero-bg-glass { background-color: rgba(255, 255, 255, 0.05); backdrop-filter: blur(4px); }
 .hero-divider { color: rgba(100, 116, 139, 0.6); }
+
+
+@utility page-fade {
+  animation: pageFade 0.4s ease-out;
+}
+@keyframes pageFade {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
