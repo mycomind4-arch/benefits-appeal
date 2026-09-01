@@ -4,6 +4,7 @@ import { Stamp, ArrowRight, CheckCircle2, Loader2, AlertCircle, Mail } from "luc
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { useAuth } from "@/lib/auth";
+import { redirectToHubSSO } from "@/lib/sso-propagate";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [
