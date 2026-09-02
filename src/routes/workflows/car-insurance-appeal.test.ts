@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getWorkflow } from "@/domain/workflows";
+import { getWorkflow } from "../../domain/workflows";
 
 describe("car insurance appeal workflow certification", () => {
   it("uses the Gold customer experience and transaction metadata", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getWorkflow } from "@/domain/workflows";
+import { getWorkflow } from "../workflows";
 
 describe("sap-appeal gold workflow contract", () => {
   it("declares the workflow and its primary keyword", () => {

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "npm run test:legacy && npm run test:unit",
+    "test:legacy": "node --import tsx --test tests/*.test.ts",
+    "test:unit": "vitest run src",
     "test:watch": "vitest",
     "lint": "next lint",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
@@ -20,14 +22,17 @@
     "next": "^15.3.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "stripe": "^16.12.0"
+    "stripe": "^16.12.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "^1.20.3",
     "@types/node": "^22.15.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "tsx": "^4.23.12",
     "typescript": "^5.8.0",
+    "vite-tsconfig-paths": "^6.0.2",
     "vitest": "^3.2.4",
     "wrangler": "^4.0.0"
   }

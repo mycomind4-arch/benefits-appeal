@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getWorkflow } from "@/domain/workflows";
+import { getWorkflow } from "../../domain/workflows";
 
 describe("financial aid reinstatement Gold workflow", () => {
   it("has the three-stage experience and workflow metadata", () => {
